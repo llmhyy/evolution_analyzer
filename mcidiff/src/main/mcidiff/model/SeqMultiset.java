@@ -57,4 +57,14 @@ public class SeqMultiset extends Multiset{
 		
 		return true;
 	}
+	
+	public boolean isGapped(){
+		for(TokenSeq seq: this.sequences){
+			if(seq.isEpisolonTokenSeq()){
+				return true;
+			}
+		}
+		
+		return false;
+	}
 }

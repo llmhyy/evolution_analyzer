@@ -3,6 +3,9 @@ package mcidiff.model;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+
+
+
 //import org.eclipse.core.resources.IFile;
 //import org.eclipse.core.resources.IWorkspace;
 //import org.eclipse.core.resources.ResourcesPlugin;
@@ -12,6 +15,9 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.FieldDeclaration;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
 //import org.eclipse.jface.text.BadLocationException;
 //import org.eclipse.jface.text.IDocument;
 //import org.eclipse.ui.editors.text.TextFileDocumentProvider;
@@ -294,4 +300,63 @@ public class TokenSeq {
 		
 		return true;
 	}
+	
+	/**
+	 * Find the completely contained methods, fields, or inner classes. Therefore, the ASTNode returned
+	 * by this method should only be MethodDeclaration, FieldDeclaration, and TypeDeclaration 
+	 * @return
+	 */
+	public ArrayList<ASTNode> findContainedMembers(){
+		ArrayList<ASTNode> nodeList = new ArrayList<>();
+		if(!isEpisolonTokenSeq()){
+			MemberRetriever retriever = new MemberRetriever();
+			CompilationUnit unit = (CompilationUnit) this.getTokens().get(0).getNode().getRoot();
+			unit.accept(retriever);
+			
+			nodeList = retriever.getContainedMembers();
+		}
+		
+		return nodeList;
+	}
+	
+	public class MemberRetriever extends ASTVisitor{
+		private ArrayList<ASTNode> nodeList = new ArrayList<>();
+		
+		public boolean visit(MethodDeclaration method){
+			if(containsASTNode(method)){
+				nodeList.add(method);
+			}	
+			return false;
+		}
+		
+		public boolean visit(FieldDeclaration field){
+			if(containsASTNode(field)){
+				nodeList.add(field);
+			}
+			return false;
+		}
+		
+		public boolean visit(TypeDeclaration type){
+			if(containsASTNode(type)){
+				nodeList.add(type);
+				return false;
+			}
+			return true;
+		}
+		
+		private boolean containsASTNode(ASTNode node){
+			int start = node.getStartPosition();
+			int end = start + node.getLength();
+			
+			return start >= TokenSeq.this.getStartPosition() && end <= TokenSeq.this.getEndPosition();
+		}
+		
+		public ArrayList<ASTNode> getContainedMembers(){
+			return nodeList;
+		}
+	}
+	
+	
+	
+	
 }
