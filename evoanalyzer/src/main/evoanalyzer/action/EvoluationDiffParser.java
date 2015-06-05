@@ -36,6 +36,8 @@ public class EvoluationDiffParser {
 					continue;
 				}
 
+				System.out.println("I am parsing the commit: " + postCommit.toString());
+				
 				// return the code change in terms of code syntax
 				JavaFileChangeAnalyzer analyzer = new JavaFileChangeAnalyzer();
 				ArrayList<FileChange> fileChangeList = analyzer.analyzeJavaFileChanges(prevCommit, postCommit, repository);
@@ -59,6 +61,8 @@ public class EvoluationDiffParser {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		System.currentTimeMillis();
 	}
 	
 	

@@ -18,6 +18,10 @@ public class FileChange {
 		this.type = type;
 	}
 	
+	public String toString(){
+		return type + ": " + newPath; 
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

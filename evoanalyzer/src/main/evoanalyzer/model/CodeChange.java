@@ -1,5 +1,7 @@
 package evoanalyzer.model;
 
+import mcidiff.util.FastASTNodeComparator;
+
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jgit.revwalk.RevCommit;
 
@@ -26,6 +28,10 @@ public class CodeChange {
 		this.prevCommit = prevCommit;
 		this.postCommit = postCommit;
 		this.node = node;
+	}
+	
+	public String toString(){
+		return changeType + ": " + node.toString();
 	}
 
 	public String getChangeType() {
@@ -66,6 +72,13 @@ public class CodeChange {
 
 	public void setNode(ASTNode node) {
 		this.node = node;
+	}
+
+	public double compareTo(CodeChange matChange) {
+		ASTNode thatNode = matChange.getNode();
+		ASTNode thisNode = this.node;
+		
+		return FastASTNodeComparator.computeNodeSim(thisNode, thatNode);
 	}
 	
 }

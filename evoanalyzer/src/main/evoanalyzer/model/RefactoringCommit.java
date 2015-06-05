@@ -17,6 +17,18 @@ public class RefactoringCommit {
 	 */
 	private RevCommit postCommit;
 
+	public RefactoringCommit(ArrayList<CodeChangeMatch> matchList) {
+		super();
+		this.matchList = matchList;
+	}
+
+	public RefactoringCommit(ArrayList<CodeChangeMatch> matchList, RevCommit prevCommit, RevCommit postCommit) {
+		super();
+		this.matchList = matchList;
+		this.prevCommit = prevCommit;
+		this.postCommit = postCommit;
+	}
+
 	public ArrayList<CodeChangeMatch> getMatchList() {
 		return matchList;
 	}

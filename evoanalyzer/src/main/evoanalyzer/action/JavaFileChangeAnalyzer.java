@@ -170,15 +170,16 @@ public class JavaFileChangeAnalyzer {
 
 				ArrayList<SeqMultiset> diffList = null; 
 				try{
-					diffList = generateCodeDiff(repository, fileChange, edit, prevWalk, postWalk);							
+					diffList = generateCodeDiff(repository, fileChange, edit, prevWalk, postWalk);
+					
+					// parse changes into codeChanges
+					ArrayList<CodeChange> codeChanges = identifyMemberLevelChanges(diffList, fileChange, prevCommit, postCommit);
+					codeChangeList.addAll(codeChanges);
 				}
 				catch(Exception e){
 					e.printStackTrace();
 				}
 
-				// parse changes into codeChanges
-				ArrayList<CodeChange> codeChanges = identifyMemberLevelChanges(diffList, fileChange, prevCommit, postCommit);
-				codeChangeList.addAll(codeChanges);
 			}
 		}
 		
