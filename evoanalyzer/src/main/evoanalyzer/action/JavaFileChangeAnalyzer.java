@@ -53,6 +53,7 @@ public class JavaFileChangeAnalyzer {
 					isInnerClass = true;
 					break;
 				}
+				parent = parent.getParent();
 			}
 			
 			if(isInnerClass){
@@ -95,6 +96,7 @@ public class JavaFileChangeAnalyzer {
 		diffFormatter.setRepository(repository);
 		diffFormatter.setContext(0);
 		List<DiffEntry> entries = diffFormatter.scan(prevTree, postTree);
+		//int count = 0;
 		for (DiffEntry entry : entries) {
 			FileChange fileChange;
 			if (entry.getOldPath().equals(entry.getNewPath())) {
@@ -126,6 +128,7 @@ public class JavaFileChangeAnalyzer {
 						prevCommit, postCommit, CodeChange.REMOVE);
 				existingFileChange.getCodeChangeList().addAll(codeChangeList);
 			}
+			
 		}
 
 		diffFormatter.close();
