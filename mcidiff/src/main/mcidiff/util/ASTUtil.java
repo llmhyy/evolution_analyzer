@@ -9,6 +9,10 @@ import java.util.Comparator;
 import mcidiff.model.CloneInstance;
 
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.ToolFactory;
+import org.eclipse.jdt.core.compiler.IScanner;
+import org.eclipse.jdt.core.compiler.ITerminalSymbols;
+import org.eclipse.jdt.core.compiler.InvalidInputException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
@@ -22,6 +26,30 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclaration;
 
 public class ASTUtil {
+	public static ArrayList<String> parseTokens(String content){
+		ArrayList<String> tokenList = new ArrayList<>();
+		
+		IScanner scanner = ToolFactory.createScanner(false, false, false, false);
+		scanner.setSource(content.toCharArray());
+		
+		while(true){
+			try {
+				int t = scanner.getNextToken();
+				if(t == ITerminalSymbols.TokenNameEOF){
+					break;
+				}
+				String tokenName = new String(scanner.getCurrentTokenSource());
+				tokenList.add(tokenName);
+				
+			} catch (InvalidInputException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+		return tokenList;
+	}
+	
 	public static String retrieveContent(String absolutePath){
 		String everything = null;
 		BufferedReader br = null;

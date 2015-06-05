@@ -254,7 +254,7 @@ public class SeqMCIDiff{
 			if(!seqMultiset.isAllEmpty()){
 				ArrayList<SeqMultiset> splitedMultisets = splitDiffRanges(seqMultiset, tokenMultisets);
 				seqMultisetList.addAll(splitedMultisets);
-				
+				System.currentTimeMillis();
 				//seqMultisetList.add(seqMultiset);
 			}
 			
@@ -379,6 +379,7 @@ public class SeqMCIDiff{
 			
 			lists.add(list);
 		}
+		
 		
 		ArrayList<SeqMultiset> multisets = matchRanges(lists, tokenMultisets);
 		
