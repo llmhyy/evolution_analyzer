@@ -104,7 +104,9 @@ public class EvoluationDiffParser {
 		cluster.add(commit);
 		commit.setMarked(true);
 		for(RefactoringCommit relatedCommit: commit.getRelatedRefactoringCommits().keySet()){
-			visit(relatedCommit, cluster);
+			if(!relatedCommit.isMarked()){
+				visit(relatedCommit, cluster);
+			}
 		}
 		
 		return cluster;
