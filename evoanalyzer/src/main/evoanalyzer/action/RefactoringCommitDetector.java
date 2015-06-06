@@ -9,6 +9,7 @@ import evoanalyzer.model.CodeChange;
 import evoanalyzer.model.CodeChangeMatch;
 import evoanalyzer.model.FileChange;
 import evoanalyzer.model.RefactoringCommit;
+import evoanalyzer.util.Settings;
 
 public class RefactoringCommitDetector {
 
@@ -67,14 +68,14 @@ public class RefactoringCommitDetector {
 			
 			if(change.getChangeType().equals(matChange.getChangeType()))continue;
 			
-			double tempSim = change.compareTo(matChange);
+			double tempSim = change.compareASTNodeTo(matChange);
 			
-			if(tempSim > sim && tempSim > 0.8){
+			if(tempSim > sim && tempSim >= Settings.ASTNodeSimilarity){
 				
 				sim = tempSim;
 				matchedIndex = i;
 				
-				change.compareTo(matChange);
+				change.compareASTNodeTo(matChange);
 			}
 			
 		}

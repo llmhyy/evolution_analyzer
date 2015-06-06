@@ -74,7 +74,7 @@ public class CodeChange {
 		this.node = node;
 	}
 
-	public double compareTo(CodeChange matChange) {
+	public double compareASTNodeTo(CodeChange matChange) {
 		ASTNode thatNode = matChange.getNode();
 		ASTNode thisNode = this.node;
 		

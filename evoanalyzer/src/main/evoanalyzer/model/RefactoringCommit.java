@@ -1,11 +1,13 @@
 package evoanalyzer.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.eclipse.jgit.revwalk.RevCommit;
 
 public class RefactoringCommit {
 	private ArrayList<CodeChangeMatch> matchList = new ArrayList<>();
+	private HashMap<RefactoringCommit, ArrayList<MatchPair>> relatedRefactoringCommits = new HashMap<>();
 	
 	/**
 	 * previous commit
@@ -27,6 +29,33 @@ public class RefactoringCommit {
 		this.matchList = matchList;
 		this.prevCommit = prevCommit;
 		this.postCommit = postCommit;
+	}
+	
+	@Override
+	public boolean equals(Object obj){
+		if(obj instanceof RefactoringCommit){
+			RefactoringCommit commit = (RefactoringCommit)obj;
+			return commit.getPostCommit().toString().equals(this.getPostCommit().toString());
+		}
+		
+		return false;
+	}
+	
+	@Override
+	public int hashCode(){
+		return this.getPostCommit().toString().hashCode();
+	}
+	
+	public HashMap<RefactoringCommit, ArrayList<MatchPair>> getRelatedRefactoringCommits() {
+		return relatedRefactoringCommits;
+	}
+
+	public void setRelatedRefactoringCommits(HashMap<RefactoringCommit, ArrayList<MatchPair>> relatedRefactoringCommits) {
+		this.relatedRefactoringCommits = relatedRefactoringCommits;
+	}
+	
+	public void addRelatedRefactoringCommit(RefactoringCommit commit, ArrayList<MatchPair> pairLists){
+		this.relatedRefactoringCommits.put(commit, pairLists);
 	}
 
 	public ArrayList<CodeChangeMatch> getMatchList() {
@@ -51,6 +80,19 @@ public class RefactoringCommit {
 
 	public void setPostCommit(RevCommit postCommit) {
 		this.postCommit = postCommit;
+	}
+
+	public ArrayList<MatchPair> findRelavantMatches(RefactoringCommit refactoringCommit) {
+		ArrayList<MatchPair> pairList = new ArrayList<>();
+		for(CodeChangeMatch thisMatch: this.matchList){
+			for(CodeChangeMatch thatMatch: refactoringCommit.getMatchList()){
+				if(thisMatch.isRelevanceTo(thatMatch)){
+					MatchPair pair = new MatchPair(thisMatch, thatMatch);
+					pairList.add(pair);
+				}
+			}
+		}
+		return pairList;
 	}
 	
 	
