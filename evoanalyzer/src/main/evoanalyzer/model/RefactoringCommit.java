@@ -9,6 +9,8 @@ public class RefactoringCommit {
 	private ArrayList<CodeChangeMatch> matchList = new ArrayList<>();
 	private HashMap<RefactoringCommit, ArrayList<MatchPair>> relatedRefactoringCommits = new HashMap<>();
 	
+	private boolean isMarked = false;
+	
 	/**
 	 * previous commit
 	 */
@@ -80,6 +82,14 @@ public class RefactoringCommit {
 
 	public void setPostCommit(RevCommit postCommit) {
 		this.postCommit = postCommit;
+	}
+	
+	public boolean isMarked() {
+		return isMarked;
+	}
+
+	public void setMarked(boolean isMarked) {
+		this.isMarked = isMarked;
 	}
 
 	public ArrayList<MatchPair> findRelavantMatches(RefactoringCommit refactoringCommit) {

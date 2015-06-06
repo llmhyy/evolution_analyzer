@@ -1,4 +1,4 @@
-package evoanalyzer;
+package evoanalyzer.util;
 
 import java.io.File;
 import java.io.IOException;

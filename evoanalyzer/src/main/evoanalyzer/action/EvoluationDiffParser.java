@@ -10,10 +10,10 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 
-import evoanalyzer.RepositoryUtil;
 import evoanalyzer.model.FileChange;
 import evoanalyzer.model.MatchPair;
 import evoanalyzer.model.RefactoringCommit;
+import evoanalyzer.util.RepositoryUtil;
 
 public class EvoluationDiffParser {
 	
@@ -45,7 +45,7 @@ public class EvoluationDiffParser {
 				JavaFileChangeAnalyzer analyzer = new JavaFileChangeAnalyzer();
 				ArrayList<FileChange> fileChangeList = analyzer.analyzeJavaFileChanges(prevCommit, postCommit, repository);
 				
-				//TODO match code changes to make sure that the refactoring exists
+				// match code changes to make sure that the refactoring exists
 				RefactoringCommitDetector refactoringDetector = new RefactoringCommitDetector();
 				RefactoringCommit refactoringCommit = refactoringDetector.detectRefactoring(fileChangeList);
 				if(null != refactoringCommit){
@@ -67,12 +67,51 @@ public class EvoluationDiffParser {
 		}
 		
 		long t2 = System.currentTimeMillis();
+		System.out.println("identifying refactoring commit time: " + (t2-t1)/1000/60);
 		
-		System.out.println("total time: " + (t2-t1)/1000/60);
+		long t3 = System.currentTimeMillis();
+		ArrayList<ArrayList<RefactoringCommit>> clusters = identifyRelevantRefactoringCommit(refactoringCommits);
+		long t4 = System.currentTimeMillis();
+		
+		System.out.println("clustering time:" + (t4-t3)/1000/60 );
+		
 	}
 	
+	/**
+	 * find the connected components of the graph of refactoring commits
+	 * @param refactoringCommits
+	 * @return
+	 */
 	private ArrayList<ArrayList<RefactoringCommit>> identifyRelevantRefactoringCommit(ArrayList<RefactoringCommit> refactoringCommits){
-		//TODO
+		ArrayList<ArrayList<RefactoringCommit>> clusters = new ArrayList<>();
+		RefactoringCommit commit = findUnmarkedCommits(refactoringCommits);
+		while(commit != null){
+			ArrayList<RefactoringCommit> cluster = new ArrayList<>();
+			visit(commit, cluster);
+			clusters.add(cluster);
+			commit = findUnmarkedCommits(refactoringCommits);
+		}
+		
+		
+		return clusters;
+	}
+
+	private ArrayList<RefactoringCommit> visit(RefactoringCommit commit, ArrayList<RefactoringCommit> cluster) {
+		cluster.add(commit);
+		commit.setMarked(true);
+		for(RefactoringCommit relatedCommit: commit.getRelatedRefactoringCommits().keySet()){
+			visit(relatedCommit, cluster);
+		}
+		
+		return cluster;
+	}
+
+	private RefactoringCommit findUnmarkedCommits(ArrayList<RefactoringCommit> refactoringCommits) {
+		for(RefactoringCommit commit: refactoringCommits){
+			if(!commit.isMarked()){
+				return commit;
+			}
+		}
 		return null;
 	}
 
