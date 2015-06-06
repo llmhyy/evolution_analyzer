@@ -16,6 +16,10 @@ public class FileChange {
 		this.oldPath = oldPath;
 		this.newPath = newPath;
 		this.type = type;
+		
+		if(ChangeType.RENAME.equals(type)){
+			System.currentTimeMillis();
+		}
 	}
 	
 	public String toString(){

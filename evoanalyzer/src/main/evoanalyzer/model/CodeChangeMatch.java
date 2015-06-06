@@ -36,7 +36,7 @@ public class CodeChangeMatch {
 	/**
 	 * Currently, I just consider two criteria for regarding two matches relevant:
 	 * 1) the moved code (or member) is moved again;
-	 * 2) difference code (or member) is moved from one same location to anther same location.
+	 * 2) difference code (or member) is moved from one relevant location to anther relevant location.
 	 * 
 	 * @param thatMatch
 	 * @return
@@ -63,7 +63,7 @@ public class CodeChangeMatch {
 	
 	private boolean isTheCodeMoveAmongSameLocation(CodeChangeMatch thatMatch){
 		if(this.getAddedChange().getFileChange().getNewPath().
-				equals(thatMatch.getAddedChange().getFileChange().getNewPath()) &&
+				equals(thatMatch.getAddedChange().getFileChange().getNewPath()) ||
 				this.getRemovedChange().getFileChange().getOldPath().
 				equals(thatMatch.getRemovedChange().getFileChange().getOldPath())){
 			return true;

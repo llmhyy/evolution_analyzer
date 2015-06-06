@@ -34,6 +34,11 @@ public class RefactoringCommit {
 	}
 	
 	@Override
+	public String toString(){
+		return this.postCommit.toString();
+	}
+	
+	@Override
 	public boolean equals(Object obj){
 		if(obj instanceof RefactoringCommit){
 			RefactoringCommit commit = (RefactoringCommit)obj;
