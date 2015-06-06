@@ -3,8 +3,6 @@ package evoanalyzer.action;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import evoanalyzer.model.RefactoringCommit;
-
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
@@ -14,17 +12,20 @@ import org.eclipse.jgit.revwalk.RevWalk;
 
 import evoanalyzer.RepositoryUtil;
 import evoanalyzer.model.FileChange;
+import evoanalyzer.model.RefactoringCommit;
 
 public class EvoluationDiffParser {
 	
 	public void parseEvoluationDiffs(String repoPath) {
 		
+		long t1 = System.currentTimeMillis();
+		
 		ArrayList<RefactoringCommit> refactoringCommits = new ArrayList<>();
 		try {
 			Repository repository = RepositoryUtil.openRepository(repoPath);
 
-			//ObjectId lastCommitId = repository.resolve(Constants.HEAD);
-			ObjectId lastCommitId = repository.resolve("84c481fce93181bd9dca1ba87c8f8ff2f3a155fc");
+			ObjectId lastCommitId = repository.resolve(Constants.HEAD);
+			//ObjectId lastCommitId = repository.resolve("bbd95ad");
 			
 			RevWalk walk = new RevWalk(repository);
 			RevCommit commit = walk.parseCommit(lastCommitId);
@@ -63,7 +64,9 @@ public class EvoluationDiffParser {
 			e.printStackTrace();
 		}
 		
-		System.currentTimeMillis();
+		long t2 = System.currentTimeMillis();
+		
+		System.out.println("total time: " + (t2-t1)/1000/60);
 	}
 	
 	
