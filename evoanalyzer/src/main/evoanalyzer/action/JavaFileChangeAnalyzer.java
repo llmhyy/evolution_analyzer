@@ -19,10 +19,10 @@ import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jgit.diff.DiffEntry;
+import org.eclipse.jgit.diff.DiffEntry.ChangeType;
 import org.eclipse.jgit.diff.DiffFormatter;
 import org.eclipse.jgit.diff.Edit;
 import org.eclipse.jgit.diff.EditList;
-import org.eclipse.jgit.diff.DiffEntry.ChangeType;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectLoader;
 import org.eclipse.jgit.lib.ObjectReader;
@@ -251,6 +251,13 @@ public class JavaFileChangeAnalyzer {
 		instanceB.setFileContent(postContent);
 		instanceB.setSet(cloneSet);
 
+		//I skip some very large diff content for efficiency, it is usually caused by encoding problem.
+		int avgLen = (instanceA.getLength() + instanceB.getLength())/2;
+		//int distance = instanceA.getLength() - instanceB.getLength();
+		if(/*Math.abs(distance)<=3 &&*/ avgLen > 80){
+			return new ArrayList<SeqMultiset>();
+		}
+		
 		cloneSet.addInstance(instanceA);
 		cloneSet.addInstance(instanceB);
 		ArrayList<SeqMultiset> diffList = new SeqMCIDiff().diff(cloneSet, null);
