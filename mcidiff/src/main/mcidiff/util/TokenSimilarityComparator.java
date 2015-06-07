@@ -3,6 +3,7 @@ package mcidiff.util;
 import mcidiff.model.Token;
 
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 
 public class TokenSimilarityComparator{
 	public double compute(Token token1, Token token2){
@@ -24,7 +25,15 @@ public class TokenSimilarityComparator{
 			// the idea is that if the two to-be-compared synonym tokens are very far way considering
 			// their relative position, they are highly likely to be unmatched
 			if(MCIDiffGlobalSettings.roughCompare == false && positionSim > MCIDiffGlobalSettings.relativeThreshold){
-				textualSim = FastASTNodeComparator.computeNodeSim(token1.getNode(), token2.getNode());
+				if(node1 instanceof CompilationUnit && node2 instanceof CompilationUnit){
+					//String title1 = ((AbstractTypeDeclaration)((CompilationUnit)node1).types().get(0)).getName().getIdentifier();
+					//String title2 = ((AbstractTypeDeclaration)((CompilationUnit)node2).types().get(0)).getName().getIdentifier();
+					//textualSim = (title1.equals(title2))? 1 : 0;
+					textualSim = 1;
+				}
+				else{
+					textualSim = FastASTNodeComparator.computeNodeSim(node1, node2);					
+				}
 				
 				contextualSim = textualSim;
 				
