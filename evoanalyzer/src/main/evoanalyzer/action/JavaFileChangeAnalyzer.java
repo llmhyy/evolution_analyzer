@@ -252,9 +252,7 @@ public class JavaFileChangeAnalyzer {
 		instanceB.setSet(cloneSet);
 
 		//I skip some very large diff content for efficiency, it is usually caused by encoding problem.
-		int avgLen = (instanceA.getLength() + instanceB.getLength())/2;
-		//int distance = instanceA.getLength() - instanceB.getLength();
-		if(/*Math.abs(distance)<=3 &&*/ avgLen > 80){
+		if(instanceA.getLength() > 80 && instanceB.getLength() > 80){
 			return new ArrayList<SeqMultiset>();
 		}
 		
