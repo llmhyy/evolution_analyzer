@@ -163,6 +163,10 @@ public class DiffUtil {
 	}
 	
 	private static double[][] buildScoreTable(Token[] tokenList1, Token[] tokenList2, TokenSimilarityComparator comparator){
+//		if(tokenList1.length > 8000){
+//			System.currentTimeMillis();
+//		}
+		
 		System.out.println("len1: " + tokenList1.length + ", len2: " + tokenList2.length);
 		double[][] similarityTable = new double[tokenList1.length + 1][tokenList2.length + 1];
 		for (int i = 0; i < tokenList1.length + 1; i++)

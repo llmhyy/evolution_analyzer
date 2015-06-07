@@ -14,7 +14,7 @@ import mcidiff.model.TokenMultiset;
 import mcidiff.model.TokenSeq;
 import mcidiff.util.ASTUtil;
 import mcidiff.util.DiffUtil;
-import mcidiff.util.GlobalSettings;
+import mcidiff.util.MCIDiffGlobalSettings;
 
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.dom.ASTNode;
@@ -76,7 +76,7 @@ public class SeqMCIDiff{
 		
 		if(preIndex != -1 && postIndex != -1){
 			while(postIndex != -1 && preIndex != -1){
-				if(postIndex-preIndex == GlobalSettings.tokenGapForMergeDiffRange+1){
+				if(postIndex-preIndex == MCIDiffGlobalSettings.tokenGapForMergeDiffRange+1){
 					ArrayList<Multiset> candidateMultisetList = new ArrayList<>();
 					for(int i=preIndex; i<=postIndex; i++){
 						candidateMultisetList.add(results.get(i));
@@ -87,7 +87,7 @@ public class SeqMCIDiff{
 					if(seqMultiset != null){
 						//adjust the array list to merge
 						results.set(preIndex, seqMultiset);
-						int offset = GlobalSettings.tokenGapForMergeDiffRange + 1;
+						int offset = MCIDiffGlobalSettings.tokenGapForMergeDiffRange + 1;
 						for(int i=preIndex+1; i<results.size()-offset; i++){
 							results.set(i, results.get(i+offset));
 						}

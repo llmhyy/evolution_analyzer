@@ -18,16 +18,17 @@ public class TokenSimilarityComparator{
 			
 			double positionSim = 1-Math.abs(token1.getRelativePositionRatio() - token2.getRelativePositionRatio());
 			
-			double textualSim = 0;
-			double contextualSim = 0;
+			double textualSim = positionSim;
+			double contextualSim = positionSim;
 			
 			// the idea is that if the two to-be-compared synonym tokens are very far way considering
 			// their relative position, they are highly likely to be unmatched
-			if(positionSim > GlobalSettings.relativeThreshold){
+			if(MCIDiffGlobalSettings.roughCompare == false && positionSim > MCIDiffGlobalSettings.relativeThreshold){
 				textualSim = FastASTNodeComparator.computeNodeSim(token1.getNode(), token2.getNode());
 				
 				contextualSim = textualSim;
 				
+				// the following code could be commented for improving efficiency
 				if(!isGodParent(node1) && !isGodParent(node2)){
 					contextualSim = FastASTNodeComparator.computeNodeSim(node1.getParent(), node2.getParent());
 				}				
@@ -37,7 +38,7 @@ public class TokenSimilarityComparator{
 			}
 			
 			//double avgWeight = (1.0)/3;
-			return 0.5*contextualSim + 0.4*textualSim + 0.0*positionSim;
+			return 0.3*contextualSim + 0.4*textualSim + 0.3*positionSim;
 		}
 		
 		return 0;
@@ -52,7 +53,7 @@ public class TokenSimilarityComparator{
 			int parentLen = parent.getLength();
 			int childLen = child.getLength();
 		
-			return parentLen > GlobalSettings.godParentRatio*childLen;
+			return parentLen > MCIDiffGlobalSettings.godParentRatio*childLen;
 		}
 	}
 }

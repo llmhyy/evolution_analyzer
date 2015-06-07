@@ -13,7 +13,7 @@ import mcidiff.model.TokenMultiset;
 import mcidiff.model.TokenSeq;
 import mcidiff.util.ASTUtil;
 import mcidiff.util.DiffUtil;
-import mcidiff.util.GlobalSettings;
+import mcidiff.util.MCIDiffGlobalSettings;
 
 import org.eclipse.jdt.core.IJavaProject;
 
@@ -283,7 +283,7 @@ public class TokenMCIDiff{
 			Token otherToken = otherSeq.getTokenList().get(i);
 			if(!otherToken.isMarked()){
 				double sim = otherToken.compareWith(seedToken);
-				if(sim > GlobalSettings.tokenSimilarityThreshold){
+				if(sim > MCIDiffGlobalSettings.tokenSimilarityThreshold){
 					if(similarity == -1){
 						similarity = sim;
 						bestMatcher = otherToken;

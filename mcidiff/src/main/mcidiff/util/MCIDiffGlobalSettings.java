@@ -1,6 +1,6 @@
 package mcidiff.util;
 
-public class GlobalSettings {
+public class MCIDiffGlobalSettings {
 
 	public static double tokenSimilarityThreshold = 0.0d;
 	
@@ -21,5 +21,11 @@ public class GlobalSettings {
 	 * the idea is that if the two to-be-compared synonym tokens are very far way considering
 	 * their relative position, they are highly likely to be unmatched.
 	 */
-	public static final double relativeThreshold = 0.0;
+	public static double relativeThreshold = 0.0;
+	
+	/**
+	 * Temporarily, I use this parameter to sacrifice accuracy. I need it when we are analyzing
+	 * code history, in this case, efficiency is a more important fact.
+	 */
+	public static boolean roughCompare = false;
 }
