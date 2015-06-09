@@ -5,6 +5,8 @@ import java.util.HashMap;
 
 import org.eclipse.jgit.revwalk.RevCommit;
 
+import evoanalyzer.util.Settings;
+
 public class RefactoringCommit {
 	private ArrayList<CodeChangeMatch> matchList = new ArrayList<>();
 	private HashMap<RefactoringCommit, ArrayList<MatchPair>> relatedRefactoringCommits = new HashMap<>();
@@ -99,14 +101,21 @@ public class RefactoringCommit {
 
 	public ArrayList<MatchPair> findRelavantMatches(RefactoringCommit refactoringCommit) {
 		ArrayList<MatchPair> pairList = new ArrayList<>();
-		for(CodeChangeMatch thisMatch: this.matchList){
-			for(CodeChangeMatch thatMatch: refactoringCommit.getMatchList()){
-				if(thisMatch.isRelevanceTo(thatMatch)){
-					MatchPair pair = new MatchPair(thisMatch, thatMatch);
-					pairList.add(pair);
+		
+		int seconds = this.postCommit.getCommitTime() - refactoringCommit.getPostCommit().getCommitTime();
+		double hours = ((double)seconds)/60/60;
+		
+		if(hours <= Settings.commitTimeInterval){
+			for(CodeChangeMatch thisMatch: this.matchList){
+				for(CodeChangeMatch thatMatch: refactoringCommit.getMatchList()){
+					if(thisMatch.isRelevanceTo(thatMatch)){
+						MatchPair pair = new MatchPair(thisMatch, thatMatch);
+						pairList.add(pair);
+					}
 				}
-			}
+			}			
 		}
+		
 		return pairList;
 	}
 	

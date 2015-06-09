@@ -55,9 +55,9 @@ public class EvoluationDiffParser {
 					refactoringCommits.add(refactoringCommit);
 				}
 				
-				if(refactoringCommits.size() > 500){
-					break;
-				}
+//				if(refactoringCommits.size() > 100){
+//					break;
+//				}
 				
 				postCommit = prevCommit;
 			}

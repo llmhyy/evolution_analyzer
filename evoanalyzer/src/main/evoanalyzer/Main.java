@@ -9,7 +9,7 @@ public class Main {
 		//MCIDiffGlobalSettings.roughCompare = false;
 		
 		EvoluationDiffParser parser = new EvoluationDiffParser();
-		parser.parseEvoluationDiffs("F:\\git_space\\eclipse.jdt.ui");
+		parser.parseEvoluationDiffs("D:\\linyun\\git_space\\eclipse.jdt.ui");
 		//parser.parseEvoluationDiffs("F:\\git_space\\ATest\\ATest");
 	}
 }
