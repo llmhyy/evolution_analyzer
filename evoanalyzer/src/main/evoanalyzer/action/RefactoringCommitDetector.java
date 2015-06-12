@@ -20,7 +20,7 @@ public class RefactoringCommitDetector {
 		
 		ArrayList<CodeChangeMatch> filteredMatches = filterRenamingRefactoring(matches);
 		
-		if(matches.size() > 0){
+		if(filteredMatches.size() > 0){
 			RevCommit prevCommit = allCodeChanges.get(0).getPrevCommit();
 			RevCommit postCommit = allCodeChanges.get(0).getPostCommit();
 			RefactoringCommit commit = new RefactoringCommit(filteredMatches, prevCommit, postCommit);
