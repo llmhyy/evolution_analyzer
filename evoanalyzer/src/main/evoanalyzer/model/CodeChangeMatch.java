@@ -1,5 +1,7 @@
 package evoanalyzer.model;
 
+import org.eclipse.jgit.diff.DiffEntry.ChangeType;
+
 import evoanalyzer.util.Settings;
 
 /**
@@ -15,6 +17,21 @@ public class CodeChangeMatch {
 		super();
 		this.addedChange = addedChange;
 		this.removedChange = removedChange;
+	}
+	
+	public boolean isRenamingRefactoring(){
+		FileChange codeAdded = getAddedChange().getFileChange();
+		FileChange codeDeleted = getRemovedChange().getFileChange();
+		
+//		if(codeAdded.getType().equals(ChangeType.MODIFY) || codeDeleted.getType().equals(ChangeType.MODIFY)){
+//			return false;
+//		}
+
+		if(codeAdded.getType().equals(ChangeType.ADD) && codeDeleted.getType().equals(ChangeType.DELETE)){
+			return true;
+		}
+		
+		return false;
 	}
 	
 	public CodeChange getAddedChange() {

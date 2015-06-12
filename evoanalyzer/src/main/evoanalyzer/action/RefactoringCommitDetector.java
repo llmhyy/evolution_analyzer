@@ -18,15 +18,28 @@ public class RefactoringCommitDetector {
 		ArrayList<CodeChange> allCodeChanges = collectAllCodeChanges(fileChangeList);
 		ArrayList<CodeChangeMatch> matches = identifyChangeMatches(allCodeChanges);
 		
+		ArrayList<CodeChangeMatch> filteredMatches = filterRenamingRefactoring(matches);
+		
 		if(matches.size() > 0){
 			RevCommit prevCommit = allCodeChanges.get(0).getPrevCommit();
 			RevCommit postCommit = allCodeChanges.get(0).getPostCommit();
-			RefactoringCommit commit = new RefactoringCommit(matches, prevCommit, postCommit);
+			RefactoringCommit commit = new RefactoringCommit(filteredMatches, prevCommit, postCommit);
 			
 			return commit;
 		}
 		
 		return null;
+	}
+	
+	private ArrayList<CodeChangeMatch> filterRenamingRefactoring(ArrayList<CodeChangeMatch> matches) {
+		ArrayList<CodeChangeMatch> resultedMatches = new ArrayList<>();
+		for(CodeChangeMatch match: matches){
+			if(!match.isRenamingRefactoring()){
+				resultedMatches.add(match);
+			}
+		}
+		
+		return resultedMatches;
 	}
 
 	private ArrayList<CodeChangeMatch> identifyChangeMatches(ArrayList<CodeChange> allCodeChanges) {

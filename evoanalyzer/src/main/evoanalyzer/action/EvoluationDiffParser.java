@@ -10,10 +10,12 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 
+import evoanalyzer.model.CodeChangeMatch;
 import evoanalyzer.model.FileChange;
 import evoanalyzer.model.MatchPair;
 import evoanalyzer.model.RefactoringCommit;
 import evoanalyzer.util.RepositoryUtil;
+import evoanalyzer.util.Settings;
 
 public class EvoluationDiffParser {
 	
@@ -85,7 +87,7 @@ public class EvoluationDiffParser {
 		
 		System.currentTimeMillis();
 	}
-	
+
 	private ArrayList<ArrayList<RefactoringCommit>> filterSingleElementCluster(ArrayList<ArrayList<RefactoringCommit>> clusters){
 		ArrayList<ArrayList<RefactoringCommit>> cls = new ArrayList<ArrayList<RefactoringCommit>>();
 		for(ArrayList<RefactoringCommit> cluster: clusters){
@@ -139,11 +141,18 @@ public class EvoluationDiffParser {
 
 	private void buildRelevance(ArrayList<RefactoringCommit> refactoringCommits, RefactoringCommit refactoringCommit) {
 		for(RefactoringCommit commit: refactoringCommits){
-			ArrayList<MatchPair> pairList = commit.findRelavantMatches(refactoringCommit);
+//			ArrayList<MatchPair> pairList = commit.findRelavantMatches(refactoringCommit);
+//			
+//			if(pairList.size() > 0){
+//				commit.addRelatedRefactoringCommit(refactoringCommit, pairList);
+//				refactoringCommit.addRelatedRefactoringCommit(commit, pairList);
+//			}
+			int seconds = commit.getPostCommit().getCommitTime() - refactoringCommit.getPostCommit().getCommitTime();
+			double hours = ((double)seconds)/60/60;
 			
-			if(pairList.size() > 0){
-				commit.addRelatedRefactoringCommit(refactoringCommit, pairList);
-				refactoringCommit.addRelatedRefactoringCommit(commit, pairList);
+			if(Math.abs(hours) <= Settings.commitTimeInterval){
+				commit.addRelatedRefactoringCommit(refactoringCommit, new ArrayList<MatchPair>());
+				refactoringCommit.addRelatedRefactoringCommit(commit, new ArrayList<MatchPair>());
 			}
 		}
 		
