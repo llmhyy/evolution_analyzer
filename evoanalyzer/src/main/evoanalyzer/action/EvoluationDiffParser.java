@@ -81,6 +81,20 @@ public class EvoluationDiffParser {
 		
 		System.out.println("clustering time:" + (t4-t3)/1000/60 );
 		
+		ArrayList<ArrayList<RefactoringCommit>> cls = filterSingleElementCluster(clusters);
+		
+		System.currentTimeMillis();
+	}
+	
+	private ArrayList<ArrayList<RefactoringCommit>> filterSingleElementCluster(ArrayList<ArrayList<RefactoringCommit>> clusters){
+		ArrayList<ArrayList<RefactoringCommit>> cls = new ArrayList<ArrayList<RefactoringCommit>>();
+		for(ArrayList<RefactoringCommit> cluster: clusters){
+			if(cluster.size() > 1){
+				cls.add(cluster);
+			}
+		}
+		
+		return cls;
 	}
 	
 	/**
