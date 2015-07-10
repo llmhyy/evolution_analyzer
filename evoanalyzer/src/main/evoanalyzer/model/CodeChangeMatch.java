@@ -27,15 +27,15 @@ public class CodeChangeMatch {
 		StringBuffer buffer = new StringBuffer();
 		String newPath = this.addedChange.getFileChange().getNewPath();
 		newPath = newPath.substring(newPath.lastIndexOf("/")+1, newPath.length());
-		String oldPath = this.addedChange.getFileChange().getOldPath();
+		String oldPath = this.removedChange.getFileChange().getOldPath();
 		oldPath = oldPath.substring(oldPath.lastIndexOf("/")+1, oldPath.length());
 		
 		buffer.append("move ");
 		buffer.append(getSimpleName(this.addedChange.getNode()));
 		buffer.append(" from ");
-		buffer.append(newPath);
-		buffer.append(" to ");
 		buffer.append(oldPath);
+		buffer.append(" to ");
+		buffer.append(newPath);
 		buffer.append("\n");
 		
 		return buffer.toString();
