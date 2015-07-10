@@ -27,10 +27,11 @@ public class EvoluationDiffParser {
 		try {
 			Repository repository = RepositoryUtil.openRepository(repoPath);
 
-			ObjectId lastCommitId = repository.resolve(Constants.HEAD);
+			//ObjectId lastCommitId = repository.resolve(Constants.HEAD);
 			//ObjectId lastCommitId = repository.resolve("479abc");
 			//ObjectId lastCommitId = repository.resolve("bbd95a");
 			//ObjectId lastCommitId = repository.resolve("86ed1f");
+			ObjectId lastCommitId = repository.resolve("852d59b");
 			
 			RevWalk walk = new RevWalk(repository);
 			RevCommit commit = walk.parseCommit(lastCommitId);

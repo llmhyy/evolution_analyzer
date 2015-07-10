@@ -1,5 +1,9 @@
 package evoanalyzer.model;
 
+import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.FieldDeclaration;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jgit.diff.DiffEntry.ChangeType;
 
 import evoanalyzer.util.Settings;
@@ -17,6 +21,41 @@ public class CodeChangeMatch {
 		super();
 		this.addedChange = addedChange;
 		this.removedChange = removedChange;
+	}
+	
+	public String toString(){
+		StringBuffer buffer = new StringBuffer();
+		String newPath = this.addedChange.getFileChange().getNewPath();
+		newPath = newPath.substring(newPath.lastIndexOf("/")+1, newPath.length());
+		String oldPath = this.addedChange.getFileChange().getOldPath();
+		oldPath = oldPath.substring(oldPath.lastIndexOf("/")+1, oldPath.length());
+		
+		buffer.append("move ");
+		buffer.append(getSimpleName(this.addedChange.getNode()));
+		buffer.append(" from ");
+		buffer.append(newPath);
+		buffer.append(" to ");
+		buffer.append(oldPath);
+		buffer.append("\n");
+		
+		return buffer.toString();
+	}
+	
+	private String getSimpleName(ASTNode node){
+		if(node instanceof TypeDeclaration){
+			TypeDeclaration decl = (TypeDeclaration)node;
+			return decl.getName().getIdentifier();
+		}
+		else if(node instanceof MethodDeclaration){
+			MethodDeclaration decl = (MethodDeclaration)node;
+			return decl.getName().getIdentifier();
+		}
+		else if(node instanceof FieldDeclaration){
+			FieldDeclaration decl = (FieldDeclaration)node;
+			return decl.fragments().get(0).toString();
+		}
+		
+		return "";
 	}
 	
 	public boolean isRenamingRefactoring(){
