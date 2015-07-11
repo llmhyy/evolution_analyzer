@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
@@ -109,11 +110,11 @@ public class EvoluationDiffParser {
 		try {
 
 			Repository repository = RepositoryUtil.openRepository(repoPath);
-			//ObjectId lastCommitId = repository.resolve(Constants.HEAD);
+			ObjectId lastCommitId = repository.resolve(Constants.HEAD);
 			// ObjectId lastCommitId = repository.resolve("479abc");
 			// ObjectId lastCommitId = repository.resolve("bbd95a");
 			// ObjectId lastCommitId = repository.resolve("86ed1f");
-			ObjectId lastCommitId = repository.resolve("852d59b");
+			// ObjectId lastCommitId = repository.resolve("852d59b");
 			
 			RevWalk walk = new RevWalk(repository);
 			RevCommit commit = walk.parseCommit(lastCommitId);
@@ -126,9 +127,9 @@ public class EvoluationDiffParser {
 
 				checkAndAddRefactoringCommits(refactoringCommits, repository, postCommit, prevCommit);
 
-				if (refactoringCommits.size() > 2) {
-					break;
-				}
+//				if (refactoringCommits.size() > 2) {
+//					break;
+//				}
 
 				postCommit = prevCommit;
 			}
@@ -173,10 +174,10 @@ public class EvoluationDiffParser {
 		StringBuffer buffer = new StringBuffer();
 		for (RefactoringCommit commit : refactoringCommits) {
 			String id = commit.toString();
-			id = id.substring(7, 13);
+			id = id.substring(7, 19);
 			
 			String preId = commit.getPrevCommit().toString();
-			preId = preId.substring(7, 13);
+			preId = preId.substring(7, 19);
 
 			buffer.append(id);
 			buffer.append(":");
