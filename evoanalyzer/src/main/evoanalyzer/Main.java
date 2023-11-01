@@ -13,7 +13,8 @@ public class Main {
 		Settings.commitTimeInterval = 72;
 		
 		EvoluationDiffParser parser = new EvoluationDiffParser();
-		parser.parseEvoluationDiffs(args[0]);
+//		parser.parseEvoluationDiffs(args[0]);
+		parser.parseEvoluationDiffs("D:\\code-space\\RegMiner");
 		//parser.parseEvoluationDiffs("F:\\git_space\\ATest\\ATest");
 	}
 }
