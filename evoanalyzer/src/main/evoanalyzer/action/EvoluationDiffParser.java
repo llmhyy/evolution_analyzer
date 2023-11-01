@@ -51,7 +51,7 @@ public class EvoluationDiffParser {
 
 		ArrayList<ArrayList<RefactoringCommit>> cls = filterSingleElementCluster(clusters);
 
-		System.currentTimeMillis();
+//		System.currentTimeMillis();
 	}
 	
 	private void checkAndAddRefactoringCommits(ArrayList<RefactoringCommit> refactoringCommits, Repository repository, 
